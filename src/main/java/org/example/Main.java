@@ -1,5 +1,5 @@
 package org.example;
-
+/*
 public class Main {
     public static void main(String[] args) {
         int tamanoBuffer = 10; // Tamaño del búfer compartido
@@ -31,9 +31,11 @@ public class Main {
 
         // Realizar visualización en tiempo real del fenómeno (debe ser implementada)
     }
-}
+}*/
+
 /*
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
@@ -92,4 +94,85 @@ public class Main extends Application {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public void stop() {
+        // Manejar la finalización de la aplicación (por ejemplo, cerrar hilos y liberar recursos)
+        Platform.exit();
+    }
 }*/
+
+/**
+ * Cuando ejecuto el codigo comentado arriba para implementar la interfaz gafrica en JavaFX
+ * a mi programa me sale el siguiente error y no se como solucionarlo si esta
+ * todo bien importado en sus librerias, modulos y dependencias
+
+/Users/rodri/Library/Java/JavaVirtualMachines/openjdk-19.0.2/Contents/Home/bin/java -javaagent:/Users/rodri
+/Library/Application Support/JetBrains/Toolbox/apps/IDEA-U/ch-0/232.9559.62/IntelliJ IDEA.app/Contents/lib
+/idea_rt.jar=61600:/Users/rodri/Library/Application Support/JetBrains/Toolbox/apps/IDEA-U/ch-0/232.9559.62
+/IntelliJ IDEA.app/Contents/bin -Dfile.encoding=UTF-8 -Dsun.stdout.encoding=UTF-8 -Dsun.stderr.encoding=UTF-8
+ -classpath /Users/rodri/IdeaProjects/PruebaOperacionDeGalton/target/classes:/Users/rodri
+ /.m2/repository/org/openjfx/javafx-graphics/19.0.2/javafx-graphics-19.0.2.jar:/Users/rodri
+ /.m2/repository/org/openjfx/javafx-graphics/19.0.2/javafx-graphics-19.0.2-mac-aarch64.jar:/Users
+ /rodri/.m2/repository/org/openjfx/javafx-base/19.0.2/javafx-base-19.0.2.jar:/Users/rodri
+ /.m2/repository/org/openjfx/javafx-base/19.0.2/javafx-base-19.0.2-mac-aarch64.jar:/Users
+ /rodri/.m2/repository/org/openjfx/javafx-controls/19.0.2/javafx-controls-19.0.2.jar:/Users
+ /rodri/.m2/repository/org/openjfx/javafx-controls/19.0.2/javafx-controls-19.0.2-mac-aarch64.jar org.example.Main
+Error: JavaFX runtime components are missing, and are required to run this application
+
+ */
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class Main {
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            createAndShowGUI();
+        });
+
+        int tamanoBuffer = 10; // Tamaño del búfer compartido
+        Fabrica fabrica = new Fabrica(tamanoBuffer);
+
+        int numEstaciones = 5; // Número de estaciones de trabajo
+        Thread[] estaciones = new Thread[numEstaciones];
+
+        for (int i = 0; i < numEstaciones; i++) {
+            estaciones[i] = new Thread(new EstacionDeTrabajo(fabrica, i));
+            estaciones[i].start();
+        }
+
+        Thread lineaDeEnsamblajeThread = new Thread(new LineaDeEnsamblaje(fabrica));
+        lineaDeEnsamblajeThread.start();
+
+        // Esperar a que todos los hilos terminen
+        try {
+            for (Thread estacion : estaciones) {
+                estacion.join();
+            }
+
+            lineaDeEnsamblajeThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void createAndShowGUI() {
+        JFrame frame = new JFrame("Distribución de Componentes");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        DefaultListModel<String> model = new DefaultListModel<>();
+        JList<String> list = new JList<>(model);
+        JScrollPane scrollPane = new JScrollPane(list);
+
+        frame.getContentPane().add(scrollPane);
+
+        frame.setPreferredSize(new Dimension(800, 600));
+        frame.pack();
+        frame.setVisible(true);
+    }
+}
+
+
+
