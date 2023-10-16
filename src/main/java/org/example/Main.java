@@ -1,4 +1,6 @@
 package org.example;
+
+//POR CONSOLA
 /*
 public class Main {
     public static void main(String[] args) {
@@ -32,6 +34,9 @@ public class Main {
         // Realizar visualización en tiempo real del fenómeno (debe ser implementada)
     }
 }*/
+
+
+//VENTA GRAFICA JAVAFX
 
 /*
 import javafx.application.Application;
@@ -105,7 +110,7 @@ public class Main extends Application {
 /**
  * Cuando ejecuto el codigo comentado arriba para implementar la interfaz gafrica en JavaFX
  * a mi programa me sale el siguiente error y no se como solucionarlo si esta
- * todo bien importado en sus librerias, modulos y dependencias
+ * todo bien importado en sus librerias, modulos y dependencias:
 
 /Users/rodri/Library/Java/JavaVirtualMachines/openjdk-19.0.2/Contents/Home/bin/java -javaagent:/Users/rodri
 /Library/Application Support/JetBrains/Toolbox/apps/IDEA-U/ch-0/232.9559.62/IntelliJ IDEA.app/Contents/lib
@@ -121,6 +126,8 @@ public class Main extends Application {
 Error: JavaFX runtime components are missing, and are required to run this application
 
  */
+
+//VENTANA GRAFICA SWING
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -173,6 +180,7 @@ public class Main {
         frame.setVisible(true);
     }
 }
+
 
 
 
